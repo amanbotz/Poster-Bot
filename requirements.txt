@@ -1,0 +1,7 @@
+pyrogram==2.0.106
+tgcrypto
+motor
+dnspython
+aiohttp
+apscheduler
+python-dotenv
