@@ -1,4 +1,4 @@
-# Telegram Poster Bot
+# Telegram Poster Bot Powered BY - Aman Botz
 
 A feature-rich Telegram bot for fetching and posting movie/web series posters from TMDB and OMDB APIs.
 
@@ -86,3 +86,4 @@ MIT License - Feel free to use and modify!
 ## Developer
 
 Made with ❤️ by [@AmanBotz](https://t.me/AmanBotz)
+
