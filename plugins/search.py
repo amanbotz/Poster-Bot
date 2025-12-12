@@ -3,7 +3,7 @@ Movie Search Handler
 Search for movies and get posters with details
 """
 
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from database import amanbotz_db
 from api import amanbotz_api
@@ -30,7 +30,7 @@ async def search_movie(client: Client, message: Message):
     if await amanbotz_db.is_banned(user_id):
         await message.reply_text(
             AMANBOTZ_ERROR_BANNED,
-            parse_mode="HTML"
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
@@ -46,7 +46,7 @@ async def search_movie(client: Client, message: Message):
     # Show searching status
     status_msg = await message.reply_text(
         "<b>🔍 Searching...</b>",
-        parse_mode="HTML"
+        parse_mode=enums.ParseMode.HTML
     )
     
     # Search for movie
@@ -55,7 +55,7 @@ async def search_movie(client: Client, message: Message):
     if not results or not results.get("results"):
         await status_msg.edit_text(
             AMANBOTZ_NO_RESULTS,
-            parse_mode="HTML"
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
@@ -100,7 +100,7 @@ async def search_movie(client: Client, message: Message):
             count=len(movies),
             results=results_text
         ),
-        parse_mode="HTML",
+        parse_mode=enums.ParseMode.HTML,
         reply_markup=keyboard
     )
 
@@ -119,7 +119,7 @@ async def handle_selection(client: Client, message: Message, selection: int):
     if selection < 1 or selection > len(results):
         await message.reply_text(
             "<b>⚠️ Invalid selection!</b>\n<i>Please choose a number from the list.</i>",
-            parse_mode="HTML"
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
@@ -161,7 +161,7 @@ async def send_movie_details(client: Client, message: Message, movie: dict, sour
             details = await amanbotz_api.omdb_get_movie(imdb_id=movie_id)
             
             if not details:
-                await message.reply_text(AMANBOTZ_ERROR_API, parse_mode="HTML")
+                await message.reply_text(AMANBOTZ_ERROR_API, parse_mode=enums.ParseMode.HTML)
                 return
             
             formatted = amanbotz_api.format_movie_details_omdb(details)
@@ -190,7 +190,7 @@ async def send_movie_details(client: Client, message: Message, movie: dict, sour
             details = await amanbotz_api.tmdb_get_movie(movie_id)
             
             if not details:
-                await message.reply_text(AMANBOTZ_ERROR_API, parse_mode="HTML")
+                await message.reply_text(AMANBOTZ_ERROR_API, parse_mode=enums.ParseMode.HTML)
                 return
             
             formatted = amanbotz_api.format_movie_details_tmdb(details)
@@ -225,28 +225,28 @@ async def send_movie_details(client: Client, message: Message, movie: dict, sour
                     await message.reply_photo(
                         photo=poster_url,
                         caption=caption,
-                        parse_mode="HTML",
+                        parse_mode=enums.ParseMode.HTML,
                         reply_markup=keyboard
                     )
                 else:
                     await message.reply_photo(
                         photo=poster_url,
                         caption=caption,
-                        parse_mode="HTML",
+                        parse_mode=enums.ParseMode.HTML,
                         reply_markup=keyboard
                     )
             except Exception:
                 # Fallback to text if poster fails
                 await message.reply_text(
                     caption,
-                    parse_mode="HTML",
+                    parse_mode=enums.ParseMode.HTML,
                     reply_markup=keyboard,
                     disable_web_page_preview=True
                 )
         else:
             await message.reply_text(
                 caption,
-                parse_mode="HTML",
+                parse_mode=enums.ParseMode.HTML,
                 reply_markup=keyboard,
                 disable_web_page_preview=True
             )
@@ -254,5 +254,5 @@ async def send_movie_details(client: Client, message: Message, movie: dict, sour
     except Exception as e:
         await message.reply_text(
             f"{AMANBOTZ_ERROR_API}\n\n<code>{str(e)}</code>",
-            parse_mode="HTML"
+            parse_mode=enums.ParseMode.HTML
         )

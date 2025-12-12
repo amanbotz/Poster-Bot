@@ -3,7 +3,7 @@ Start Command Handler
 Impressive welcome page with random movie poster
 """
 
-from pyrogram import Client, filters
+from pyrogram import Client, filters, enums
 from pyrogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
 from database import amanbotz_db
 from api import amanbotz_api
@@ -22,7 +22,7 @@ async def start_command(client: Client, message: Message):
     if await amanbotz_db.is_banned(user_id):
         await message.reply_text(
             AMANBOTZ_ERROR_BANNED,
-            parse_mode="HTML"
+            parse_mode=enums.ParseMode.HTML
         )
         return
     
@@ -57,14 +57,14 @@ async def start_command(client: Client, message: Message):
             await message.reply_photo(
                 photo=random_movie["poster"],
                 caption=caption,
-                parse_mode="HTML",
+                parse_mode=enums.ParseMode.HTML,
                 reply_markup=keyboard
             )
         except Exception:
             # Fallback if poster fails
             await message.reply_text(
                 caption,
-                parse_mode="HTML",
+                parse_mode=enums.ParseMode.HTML,
                 reply_markup=keyboard,
                 disable_web_page_preview=True
             )
@@ -78,7 +78,7 @@ async def start_command(client: Client, message: Message):
         )
         await message.reply_text(
             fallback_message,
-            parse_mode="HTML",
+            parse_mode=enums.ParseMode.HTML,
             reply_markup=keyboard,
             disable_web_page_preview=True
         )
@@ -124,13 +124,13 @@ async def start_callback(client: Client, callback_query):
             )
             await callback_query.message.edit_caption(
                 caption=caption,
-                parse_mode="HTML",
+                parse_mode=enums.ParseMode.HTML,
                 reply_markup=keyboard
             )
         except Exception:
             await callback_query.message.edit_text(
                 caption,
-                parse_mode="HTML",
+                parse_mode=enums.ParseMode.HTML,
                 reply_markup=keyboard,
                 disable_web_page_preview=True
             )
@@ -143,7 +143,7 @@ async def start_callback(client: Client, callback_query):
         )
         await callback_query.message.edit_text(
             fallback_message,
-            parse_mode="HTML",
+            parse_mode=enums.ParseMode.HTML,
             reply_markup=keyboard,
             disable_web_page_preview=True
         )
